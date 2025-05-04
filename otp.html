@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent OTP Lookup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Inter', sans-serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    input {
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #00c9a7;
+      color: #000;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #00b394;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 18px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffc8;
+      word-wrap: break-word;
+    }
+
+    @media (max-width: 400px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      #result {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter Your Agent OTP</h2>
+    <input type="text" id="otpInput" placeholder="e.g. 10292003">
+    <button onclick="checkOTP()">Reveal Identity</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const agents = {
+      "10292003": { codename: "GLADIO", passcode: "Bran Cete" },
+      "11091989": { codename: "ORION", passcode: "Prime Tallon" },
+      "05181946": { codename: "MKULTRA", passcode: "Zirahs" },
+      "08211960": { codename: "ECLIPSE", passcode: "Belcam" },
+      "11221963": { codename: "PHOENIX", passcode: "Change Re" },
+      "03231970": { codename: "APOLLYON", passcode: "End Fanzil" },
+      "07221949": { codename: "SPECTRE", passcode: "Segnagnoise" },
+      "06261947": { codename: "ARTICHOKE", passcode: "Rashy" },
+      "08231948": { codename: "TEMPLAR", passcode: "Molter" },
+      "04181961": { codename: "RAVENWOOD", passcode: "Iron Point" },
+      "12261970": { codename: "BLACKBIRD", passcode: "Ray D Achnor" }
+    };
+
+    function checkOTP() {
+      const otp = document.getElementById("otpInput").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (agents[otp]) {
+        resultDiv.innerHTML = `Codename: <strong>${agents[otp].codename}</strong><br>Passcode: <strong>${agents[otp].passcode}</strong>`;
+      } else {
+        resultDiv.innerHTML = "<span style='color: #ff4d4d;'>Invalid OTP. Try again.</span>";
+      }
+    }
+  </script>
+</body>
+</html>
