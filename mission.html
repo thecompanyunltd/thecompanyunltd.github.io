@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent Mission Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Inter', sans-serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    input {
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #00c9a7;
+      color: #000;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #00b394;
+    }
+
+    #mission {
+      margin-top: 25px;
+      font-size: 17px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffc8;
+      word-wrap: break-word;
+    }
+
+    @media (max-width: 400px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      #mission {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Agent Mission Access</h2>
+    <input type="text" id="codenameInput" placeholder="Enter Codename">
+    <input type="text" id="passcodeInput" placeholder="Enter Passcode">
+    <button onclick="verifyAgent()">Access Mission</button>
+    <div id="mission"></div>
+  </div>
+
+  <script>
+    const agents = {
+      "gladio|bran cete": true,
+      "orion|prime tallon": true,
+      "mkultra|zirahs": true,
+      "eclipse|belcam": true,
+      "phoenix|change re": true,
+      "apollyon|end fanzil": true,
+      "spectre|segnagnoise": true,
+      "artichoke|rashy": true,
+      "templar|molter": true,
+      "ravenwood|iron point": true,
+      "blackbird|ray d achnor": true
+    };
+
+    function verifyAgent() {
+      const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
+      const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
+      const key = `${codename}|${passcode}`;
+      const missionDiv = document.getElementById("mission");
+
+      if (agents[key]) {
+        missionDiv.innerHTML = `Mission Brief:<br><strong>No mission uploaded yet.</strong>`;
+      } else {
+        missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
+      }
+    }
+  </script>
+</body>
+</html>
