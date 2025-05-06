@@ -22,28 +22,28 @@ if (!isset($input['codename']) || !isset($input['mission'])) {
 $codename = strtolower(trim($input['codename']));
 $newMission = trim($input['mission']);
 
-$missionsFile = 'missions.json';
+$missionFile = 'mission.json';
 
 // Check if file exists
-if (!file_exists($missionsFile)) {
-  echo json_encode(['success' => false, 'message' => 'Missions file not found']);
+if (!file_exists($missionFile)) {
+  echo json_encode(['success' => false, 'message' => 'mission file not found']);
   exit;
 }
 
-// Read and decode current missions
-$missionsData = json_decode(file_get_contents($missionsFile), true);
+// Read and decode current mission
+$missionData = json_decode(file_get_contents($missionFile), true);
 
 // Validate codename exists
-if (!isset($missionsData[$codename])) {
+if (!isset($missionData[$codename])) {
   echo json_encode(['success' => false, 'message' => 'Codename not found']);
   exit;
 }
 
 // Update mission
-$missionsData[$codename]['mission'] = $newMission;
+$missionData[$codename]['mission'] = $newMission;
 
-// Write updated missions back to file
-if (file_put_contents($missionsFile, json_encode($missionsData, JSON_PRETTY_PRINT))) {
+// Write updated mission back to file
+if (file_put_contents($missionFile, json_encode($missionData, JSON_PRETTY_PRINT))) {
   echo json_encode(['success' => true]);
 } else {
   echo json_encode(['success' => false, 'message' => 'Failed to write to file']);
