@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Mission Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Cascadia+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212;
+      font-family: 'Cascadia Code', monospace;
+      color: #ffffff;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-family: 'Baskervville', serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #5E17EB;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Cascadia Code', monospace;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #FF914D;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff7a2a;
+    }
+
+    .notice {
+      color: #ff5c5c;
+      margin-top: 10px;
+    }
+
+    #successMsg {
+      color: #00ffc8;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>THE COMPANY – Mission Control</h1>
+
+  <select id="codenameSelect">
+    <option value="" disabled selected>Select an Agent</option>
+    <option value="gladio">gladio</option>
+    <option value="orion">orion</option>
+    <option value="mkultra">mkultra</option>
+    <option value="eclipse">eclipse</option>
+    <option value="phoenix">phoenix</option>
+    <option value="apollyon">apollyon</option>
+    <option value="spectre">spectre</option>
+    <option value="artichoke">artichoke</option>
+    <option value="templar">templar</option>
+    <option value="ravenwood">ravenwood</option>
+    <option value="blackbird">blackbird</option>
+  </select>
+
+  <textarea id="missionText" placeholder="Enter new mission brief..."></textarea>
+
+  <button onclick="submitMission()">Submit Mission Update</button>
+
+  <div id="successMsg"></div>
+
+  <script>
+    // Redirect if not logged in
+    if (localStorage.getItem("admin") !== "true") {
+      alert("Access denied. Please log in as admin.");
+      window.location.href = "admin.html";
+    }
+
+    function submitMission() {
+      const codename = document.getElementById("codenameSelect").value;
+      const mission = document.getElementById("missionText").value.trim();
+      const msg = document.getElementById("successMsg");
+
+      if (!codename || !mission) {
+        msg.innerText = "Please select a codename and enter a mission.";
+        return;
+      }
+
+      fetch("update_mission.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ codename, mission })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          msg.innerText = "Mission updated successfully.";
+        } else {
+          msg.innerText = "Update failed: " + (data.message || "Unknown error.");
+        }
+      })
+      .catch(err => {
+        msg.innerText = "Error connecting to server.";
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
