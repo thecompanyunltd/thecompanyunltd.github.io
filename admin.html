@@ -1,0 +1,65 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mission Control Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #1d1d1d;
+      color: white;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+    button {
+      padding: 10px 20px;
+      background: #5E17EB;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Admin Mission Uploader</h2>
+  <label>Codename:</label>
+  <input type="text" id="codename">
+  <label>Passcode:</label>
+  <input type="text" id="passcode">
+  <label>Mission Brief:</label>
+  <textarea id="missionText" rows="6"></textarea>
+  <button onclick="uploadMission()">Upload Mission</button>
+  <div id="status"></div>
+
+  <script>
+    async function uploadMission() {
+      const codename = document.getElementById('codename').value.trim().toLowerCase();
+      const passcode = document.getElementById('passcode').value.trim().toLowerCase();
+      const mission = document.getElementById('missionText').value.trim();
+      const key = `${codename}|${passcode}`;
+
+      const response = await fetch('missions.json');
+      const missions = await response.json();
+      missions[key] = mission;
+
+      // Submit new mission list (requires backend, this is pseudo-code)
+      fetch('update_missions.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(missions)
+      }).then(res => {
+        document.getElementById('status').innerText = 'Mission uploaded!';
+      }).catch(err => {
+        document.getElementById('status').innerText = 'Failed to upload.';
+      });
+    }
+  </script>
+</body>
+</html>
