@@ -1,13 +1,35 @@
 {
-  "gladio|bran cete": "Mission Status: Pending",
-  "orion|prime tallon": "Mission Status: Pending",
-  "mkultra|zirahs": "Mission Status: Pending",
-  "eclipse|belcam": "Mission Status: Pending",
-  "phoenix|change re": "Mission Status: Pending",
-  "apollyon|end fanzil": "Mission Status: Pending",
-  "spectre|segnagnoise": "Mission Status: Pending",
-  "artichoke|rashy": "Mission Status: Pending",
-  "templar|molter": "Mission Status: Pending",
-  "ravenwood|iron point": "Mission Status: Pending",
-  "blackbird|ray d achnor": "Mission Status: Pending"
+  "gladio": {
+    "mission": "Mission Status: Pending"
+  },
+  "orion": {
+    "mission": "Mission Status: Pending"
+  },
+  "mkultra": {
+    "mission": "Mission Status: Pending"
+  },
+  "eclipse": {
+    "mission": "Mission Status: Pending"
+  },
+  "phoenix": {
+    "mission": "Mission Status: Pending"
+  },
+  "apollyon": {
+    "mission": "Mission Status: Pending"
+  },
+  "spectre": {
+    "mission": "Mission Status: Pending"
+  },
+  "artichoke": {
+    "mission": "Mission Status: Pending"
+  },
+  "templar": {
+    "mission": "Mission Status: Pending"
+  },
+  "ravenwood": {
+    "mission": "Mission Status: Pending"
+  },
+  "blackbird": {
+    "mission": "Mission Status: Pending"
+  }
 }
