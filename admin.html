@@ -1,64 +1,68 @@
-<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mission Control Panel</title>
+  <meta charset="UTF-8">
+  <title>Admin Login - THE COMPANY</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background: #1d1d1d;
-      color: white;
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Cascadia Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    input, textarea {
-      width: 100%;
+
+    .login-box {
+      background: #1f1f1f;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #5E17EB;
+      text-align: center;
+    }
+
+    input {
       padding: 10px;
-      margin: 0.5rem 0;
-      font-size: 1rem;
-    }
-    button {
-      padding: 10px 20px;
-      background: #5E17EB;
-      color: white;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 8px;
       border: none;
+    }
+
+    button {
+      background: #FF914D;
+      color: #000;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
+    }
+
+    h2 {
+      font-family: 'Baskerville Old Style', serif;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <h2>Admin Mission Uploader</h2>
-  <label>Codename:</label>
-  <input type="text" id="codename">
-  <label>Passcode:</label>
-  <input type="text" id="passcode">
-  <label>Mission Brief:</label>
-  <textarea id="missionText" rows="6"></textarea>
-  <button onclick="uploadMission()">Upload Mission</button>
-  <div id="status"></div>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Enter Admin Password">
+    <button onclick="login()">Login</button>
+  </div>
 
   <script>
-    async function uploadMission() {
-      const codename = document.getElementById('codename').value.trim().toLowerCase();
-      const passcode = document.getElementById('passcode').value.trim().toLowerCase();
-      const mission = document.getElementById('missionText').value.trim();
-      const key = `${codename}|${passcode}`;
-
-      const response = await fetch('missions.json');
-      const missions = await response.json();
-      missions[key] = mission;
-
-      // Submit new mission list (requires backend, this is pseudo-code)
-      fetch('update_missions.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(missions)
-      }).then(res => {
-        document.getElementById('status').innerText = 'Mission uploaded!';
-      }).catch(err => {
-        document.getElementById('status').innerText = 'Failed to upload.';
-      });
+    function login() {
+      const input = document.getElementById('adminPass').value;
+      if (input === 'companyadmin2025') {
+        localStorage.setItem('admin', 'true');
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Incorrect password.');
+      }
     }
   </script>
 </body>
