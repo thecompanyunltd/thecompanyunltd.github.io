@@ -111,7 +111,7 @@
       const missionDiv = document.getElementById("mission");
 
       try {
-        const response = await fetch('missions.json');
+        const response = await fetch('mission.json');
         const data = await response.json();
 
         if (data[key]) {
@@ -120,7 +120,7 @@
           missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
         }
       } catch (error) {
-        missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Error loading missions.</span>";
+        missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Error loading mission.</span>";
       }
     }
   </script>
