@@ -11,7 +11,7 @@
   <div class="container">
     <h2>Agent Mission Access</h2>
     <input type="text" id="codenameInput" placeholder="Enter Codename" />
-    <input type="text" id="passcodeInput" placeholder="Enter Passcode" />
+    <input type="password" id="passcodeInput" placeholder="Enter Passcode" />
     <button id="accessButton">Access Mission</button>
     <div id="mission"></div>
   </div>
@@ -19,7 +19,11 @@
   <!-- Firebase config and main logic -->
   <script type="module">
     import { db, doc, getDoc } from './scripts/firebase.js';
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+    const auth = getAuth();
+
+    // Valid keys (codename|passcode)
     const validKeys = {
       "gladio|bran cete": true,
       "orion|prime tallon": true,
@@ -34,29 +38,44 @@
       "blackbird|ray d achnor": true
     };
 
+    // Verify agent credentials (codename and passcode)
     async function verifyAgent() {
       const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
       const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
       const key = `${codename}|${passcode}`;
       const missionDiv = document.getElementById("mission");
 
+      // Check if codename and passcode are valid
       if (validKeys[key]) {
-        try {
-          const docRef = doc(db, "missions", codename);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${data.mission}`;
-          } else {
-            missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>Pending...`;
-          }
-        } catch (error) {
-          console.error("Error accessing Firebase:", error);
-          missionDiv.innerHTML = "Error accessing database.";
-        }
+        // Sign the agent in anonymously (as a temporary authentication for the session)
+        await signInAnonymously(auth).then(() => {
+          // If authentication is successful, fetch the mission for this agent
+          fetchMission(codename);
+        }).catch((error) => {
+          console.error("Error during anonymous authentication:", error);
+          missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Authentication failed. Please try again.</span>";
+        });
       } else {
         missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
+      }
+    }
+
+    // Fetch mission data from Firestore after successful login
+    async function fetchMission(codename) {
+      const missionDiv = document.getElementById("mission");
+      
+      try {
+        const docRef = doc(db, "missions", codename);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${docSnap.data().mission}`;
+        } else {
+          missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>Pending...`;
+        }
+      } catch (e) {
+        console.error("Error retrieving mission:", e);
+        missionDiv.innerHTML = "Error accessing database.";
       }
     }
 
