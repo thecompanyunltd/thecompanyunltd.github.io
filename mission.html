@@ -4,23 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent Mission Access</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    input, button {
+      margin: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #mission {
+      margin-top: 20px;
+      max-width: 500px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Agent Mission Access</h2>
-    <input type="text" id="codenameInput" placeholder="Enter Codename">
-    <input type="text" id="passcodeInput" placeholder="Enter Passcode">
-    <button onclick="verifyAgent()">Access Mission</button>
-    <div id="mission"></div>
-  </div>
+  <h2>Agent Mission Access</h2>
+  <input type="text" id="codenameInput" placeholder="Enter Codename">
+  <input type="text" id="passcodeInput" placeholder="Enter Passcode">
+  <button onclick="verifyAgent()">Access Mission</button>
+  <div id="mission"></div>
 
+  <!-- Firebase SDK -->
   <script type="module">
-    // Firebase SDKs
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
       authDomain: "thecompanymissions.firebaseapp.com",
@@ -30,11 +48,9 @@
       appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Valid keys to verify codename and passcode combination
     const validKeys = {
       "gladio|bran cete": true,
       "orion|prime tallon": true,
@@ -49,37 +65,30 @@
       "blackbird|ray d achnor": true
     };
 
-    // Verify agent function
-    async function verifyAgent() {
+    window.verifyAgent = async function () {
       const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
       const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
       const key = `${codename}|${passcode}`;
       const missionDiv = document.getElementById("mission");
 
-      // Check if the codename and passcode match a valid key
       if (validKeys[key]) {
         try {
-          // Fetch the mission from Firebase
           const docRef = doc(db, "missions", codename);
           const docSnap = await getDoc(docRef);
-
           if (docSnap.exists()) {
             const data = docSnap.data();
             missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${data.mission}`;
           } else {
-            missionDiv.innerHTML = "<strong>Mission Status:</strong> Pending...";
+            missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
           }
-        } catch (error) {
-          console.error("Error retrieving mission:", error);
-          missionDiv.innerHTML = "Error accessing database.";
+        } catch (e) {
+          console.error(e);
+          missionDiv.innerHTML = "❌ Error fetching mission.";
         }
       } else {
         missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
       }
-    }
-
-    window.verifyAgent = verifyAgent;
+    };
   </script>
 </body>
 </html>
-
