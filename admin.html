@@ -76,12 +76,10 @@
 
 <!-- Firebase App (the core Firebase SDK) -->
 <script type="module">
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+  // Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
   authDomain: "thecompanymissions.firebaseapp.com",
@@ -91,8 +89,8 @@ const firebaseConfig = {
   appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
   window.updateMission = async function () {
     const codename = document.getElementById("codename").value.trim().toLowerCase();
@@ -113,6 +111,10 @@ const app = initializeApp(firebaseConfig);
     }
   };
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
