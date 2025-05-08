@@ -24,6 +24,16 @@
       width: 90%;
       max-width: 500px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+
+    .login-box {
+      background: #2c2c2c;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     h2 {
@@ -66,7 +76,16 @@
 </head>
 <body>
 
-<div class="admin-box">
+<!-- Login First -->
+<div class="login-box" id="loginBox">
+  <h2>Admin Login</h2>
+  <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+  <button onclick="verifyLogin()">Login</button>
+  <div class="status" id="loginStatus"></div>
+</div>
+
+<!-- Hidden until password is correct -->
+<div class="admin-box" id="adminBox">
   <h2>Update Agent Mission</h2>
   <input type="text" id="codename" placeholder="Codename (e.g., gladio)">
   <textarea id="missionText" rows="6" placeholder="Enter new mission text here..."></textarea>
@@ -74,23 +93,37 @@
   <div class="status" id="status"></div>
 </div>
 
-<!-- Firebase App (the core Firebase SDK) -->
 <script type="module">
-  // Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
-  authDomain: "thecompanymissions.firebaseapp.com",
-  projectId: "thecompanymissions",
-  storageBucket: "thecompanymissions.firebasestorage.app",
-  messagingSenderId: "1025657294999",
-  appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
+    authDomain: "thecompanymissions.firebaseapp.com",
+    projectId: "thecompanymissions",
+    storageBucket: "thecompanymissions.firebasestorage.app",
+    messagingSenderId: "1025657294999",
+    appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
+  };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // Password Gate
+  const ADMIN_PASSWORD = "thecompany2025";
+  window.verifyLogin = function () {
+    const input = document.getElementById("adminPassword").value;
+    const loginBox = document.getElementById("loginBox");
+    const adminBox = document.getElementById("adminBox");
+    const loginStatus = document.getElementById("loginStatus");
+
+    if (input === ADMIN_PASSWORD) {
+      loginBox.style.display = "none";
+      adminBox.style.display = "block";
+    } else {
+      loginStatus.innerHTML = "❌ Incorrect password.";
+    }
+  };
 
   window.updateMission = async function () {
     const codename = document.getElementById("codename").value.trim().toLowerCase();
