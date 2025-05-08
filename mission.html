@@ -1,29 +1,40 @@
-<!-- mission.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent Mission Access</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <h2>Agent Mission Access</h2>
-    <input type="text" id="codenameInput" placeholder="Enter Codename" />
-    <input type="password" id="passcodeInput" placeholder="Enter Passcode" />
-    <button id="accessButton">Access Mission</button>
+    <input type="text" id="codenameInput" placeholder="Enter Codename">
+    <input type="text" id="passcodeInput" placeholder="Enter Passcode">
+    <button onclick="verifyAgent()">Access Mission</button>
     <div id="mission"></div>
   </div>
 
-  <!-- Firebase config and main logic -->
   <script type="module">
-    import { db, doc, getDoc } from './scripts/firebase.js';
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    // Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const auth = getAuth();
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
+      authDomain: "thecompanymissions.firebaseapp.com",
+      projectId: "thecompanymissions",
+      storageBucket: "thecompanymissions.firebasestorage.app",
+      messagingSenderId: "1025657294999",
+      appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
+    };
 
-    // Valid keys (codename|passcode)
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Valid keys to verify codename and passcode combination
     const validKeys = {
       "gladio|bran cete": true,
       "orion|prime tallon": true,
@@ -38,48 +49,36 @@
       "blackbird|ray d achnor": true
     };
 
-    // Verify agent credentials (codename and passcode)
+    // Verify agent function
     async function verifyAgent() {
       const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
       const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
       const key = `${codename}|${passcode}`;
       const missionDiv = document.getElementById("mission");
 
-      // Check if codename and passcode are valid
+      // Check if the codename and passcode match a valid key
       if (validKeys[key]) {
-        // Sign the agent in anonymously (as a temporary authentication for the session)
-        await signInAnonymously(auth).then(() => {
-          // If authentication is successful, fetch the mission for this agent
-          fetchMission(codename);
-        }).catch((error) => {
-          console.error("Error during anonymous authentication:", error);
-          missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Authentication failed. Please try again.</span>";
-        });
+        try {
+          // Fetch the mission from Firebase
+          const docRef = doc(db, "missions", codename);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${data.mission}`;
+          } else {
+            missionDiv.innerHTML = "<strong>Mission Status:</strong> Pending...";
+          }
+        } catch (error) {
+          console.error("Error retrieving mission:", error);
+          missionDiv.innerHTML = "Error accessing database.";
+        }
       } else {
         missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
       }
     }
 
-    // Fetch mission data from Firestore after successful login
-    async function fetchMission(codename) {
-      const missionDiv = document.getElementById("mission");
-      
-      try {
-        const docRef = doc(db, "missions", codename);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${docSnap.data().mission}`;
-        } else {
-          missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>Pending...`;
-        }
-      } catch (e) {
-        console.error("Error retrieving mission:", e);
-        missionDiv.innerHTML = "Error accessing database.";
-      }
-    }
-
-    document.getElementById("accessButton").addEventListener("click", verifyAgent);
+    window.verifyAgent = verifyAgent;
   </script>
 </body>
 </html>
