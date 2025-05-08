@@ -1,69 +1,48 @@
+<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login - THE COMPANY</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: #fff;
-      font-family: 'Cascadia Code', monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-box {
-      background: #1f1f1f;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #5E17EB;
-      text-align: center;
-    }
-
-    input {
-      padding: 10px;
-      width: 100%;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    button {
-      background: #FF914D;
-      color: #000;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    h2 {
-      font-family: 'Baskerville Old Style', serif;
-      margin-bottom: 20px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Mission Uploader</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="login-box">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Enter Admin Password">
-    <button onclick="login()">Login</button>
+  <div class="container">
+    <h2>Admin Mission Upload</h2>
+    <input type="text" id="codename" placeholder="Codename">
+    <input type="text" id="passcode" placeholder="Passcode">
+    <textarea id="mission" placeholder="Enter mission text here..."></textarea>
+    <button onclick="submitMission()">Submit Mission</button>
+    <p id="status"></p>
   </div>
 
-  <script>
-    function login() {
-      const input = document.getElementById('adminPass').value;
-      if (input === 'companyadmin2025') {
-        localStorage.setItem('admin', 'true');
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Incorrect password.');
+  <script type="module">
+    import { db, doc, setDoc } from './scripts/firebase.js';
+
+    async function submitMission() {
+      const codename = document.getElementById("codename").value.trim().toLowerCase();
+      const passcode = document.getElementById("passcode").value.trim().toLowerCase();
+      const mission = document.getElementById("mission").value.trim();
+      const statusEl = document.getElementById("status");
+
+      if (!codename || !passcode || !mission) {
+        statusEl.textContent = "Please fill all fields.";
+        return;
+      }
+
+      const key = `${codename}|${passcode}`;
+
+      try {
+        await setDoc(doc(db, "agents", key), { mission });
+        statusEl.textContent = "Mission successfully uploaded.";
+      } catch (error) {
+        console.error("Error writing document: ", error);
+        statusEl.textContent = "Error uploading mission.";
       }
     }
+
+    window.submitMission = submitMission;
   </script>
 </body>
 </html>
