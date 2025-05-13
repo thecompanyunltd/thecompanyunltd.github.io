@@ -130,38 +130,29 @@
     };
 
     window.verifyAgent = async function () {
-  const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
-  const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
-  const key = `${codename}|${passcode}`;
-  const missionDiv = document.getElementById("mission");
-  const loadingMessage = document.getElementById("loadingMessage");
+      const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
+      const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
+      const key = `${codename}|${passcode}`;
+      const missionDiv = document.getElementById("mission");
 
-  missionDiv.innerHTML = "";
-  loadingMessage.style.display = "block"; // Show loading message
-
-  if (validKeys[key]) {
-    try {
-      const docRef = doc(db, "missions", codename);
-      const docSnap = await getDoc(docRef);
-      loadingMessage.style.display = "none"; // Hide after fetch
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
+      if (validKeys[key]) {
+        try {
+          const docRef = doc(db, "missions", codename);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
+          } else {
+            missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
+          }
+        } catch (e) {
+          console.error(e);
+          missionDiv.innerHTML = "❌ Error fetching mission.";
+        }
       } else {
-        missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
+        missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
       }
-    } catch (e) {
-      console.error(e);
-      loadingMessage.style.display = "none";
-      missionDiv.innerHTML = "❌ Error fetching mission.";
-    }
-  } else {
-    loadingMessage.style.display = "none";
-    missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
-  }
-};
-
+    };
   </script>
 </body>
 </html>
