@@ -94,93 +94,75 @@
     <input type="text" id="codenameInput" placeholder="Codename">
     <input type="text" id="passcodeInput" placeholder="Passcode">
     <button onclick="verifyAgent()">Access Mission</button>
-    <p>Secure network engaged. Verifying agent credentials...</p>
-    <div id="mission"></div>
-    <input type="text" id="codenameInput" name="username" placeholder="Codename" autocomplete="username">
-    <input type="text" id="passcodeInput" name="current-password" placeholder="Passcode" autocomplete="current-password">
-    <label style="display: flex; align-items: center; font-size: 0.85rem; color: #ccc;">
-    <input type="checkbox" id="rememberMe" style="margin-right: 8px;"> Remember Me
-</label>
 
+    <!-- Dynamic popup -->
+    <p id="verifyingMessage" style="display: none;">Secure network engaged. Verifying agent credentials...</p>
+
+    <div id="mission"></div>
   </div>
 
+  <!-- Firebase SDK -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
-    authDomain: "thecompanymissions.firebaseapp.com",
-    projectId: "thecompanymissions",
-    storageBucket: "thecompanymissions.firebasestorage.app",
-    messagingSenderId: "1025657294999",
-    appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
+      authDomain: "thecompanymissions.firebaseapp.com",
+      projectId: "thecompanymissions",
+      storageBucket: "thecompanymissions.firebasestorage.app",
+      messagingSenderId: "1025657294999",
+      appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const validKeys = {
-    "gladio|bran cete": true,
-    "orion|prime tallon": true,
-    "mkultra|zirahs": true,
-    "eclipse|belcam": true,
-    "phoenix|change re": true,
-    "apollyon|end fanzil": true,
-    "spectre|segnagnoise": true,
-    "artichoke|rashy": true,
-    "templar|molter": true,
-    "ravenwood|iron point": true,
-    "blackbird|ray d achnor": true
-  };
+    const validKeys = {
+      "gladio|bran cete": true,
+      "orion|prime tallon": true,
+      "mkultra|zirahs": true,
+      "eclipse|belcam": true,
+      "phoenix|change re": true,
+      "apollyon|end fanzil": true,
+      "spectre|segnagnoise": true,
+      "artichoke|rashy": true,
+      "templar|molter": true,
+      "ravenwood|iron point": true,
+      "blackbird|ray d achnor": true
+    };
 
-  // Autofill on page load
-  window.addEventListener("DOMContentLoaded", () => {
-    const savedCodename = localStorage.getItem("codename");
-    const savedPasscode = localStorage.getItem("passcode");
-    if (savedCodename && savedPasscode) {
-      document.getElementById("codenameInput").value = savedCodename;
-      document.getElementById("passcodeInput").value = savedPasscode;
-      document.getElementById("rememberMe").checked = true;
-    }
-  });
+    window.verifyAgent = async function () {
+      const verifyingMessage = document.getElementById("verifyingMessage");
+      verifyingMessage.style.display = "block";
 
-  window.verifyAgent = async function () {
-    const codenameInput = document.getElementById("codenameInput");
-    const passcodeInput = document.getElementById("passcodeInput");
-    const rememberMe = document.getElementById("rememberMe");
-    const codename = codenameInput.value.trim().toLowerCase();
-    const passcode = passcodeInput.value.trim().toLowerCase();
-    const key = `${codename}|${passcode}`;
-    const missionDiv = document.getElementById("mission");
+      setTimeout(() => {
+        verifyingMessage.style.display = "none";
+      }, 5000); // Hide after 5 seconds
 
-    // Save credentials if "Remember Me" is checked
-    if (rememberMe.checked) {
-      localStorage.setItem("codename", codenameInput.value);
-      localStorage.setItem("passcode", passcodeInput.value);
-    } else {
-      localStorage.removeItem("codename");
-      localStorage.removeItem("passcode");
-    }
+      const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
+      const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
+      const key = `${codename}|${passcode}`;
+      const missionDiv = document.getElementById("mission");
 
-    if (validKeys[key]) {
-      try {
-        const docRef = doc(db, "missions", codename);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
-        } else {
-          missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
+      if (validKeys[key]) {
+        try {
+          const docRef = doc(db, "missions", codename);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
+          } else {
+            missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
+          }
+        } catch (e) {
+          console.error(e);
+          missionDiv.innerHTML = "❌ Error fetching mission.";
         }
-      } catch (e) {
-        console.error(e);
-        missionDiv.innerHTML = "❌ Error fetching mission.";
+      } else {
+        missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
       }
-    } else {
-      missionDiv.innerHTML = "<span style='color: #ff4d4d;'>Access Denied. Invalid credentials.</span>";
-    }
-  };
-</script>
+    };
+  </script>
 </body>
 </html>
