@@ -4,36 +4,99 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent Mission Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code&family=Libre+Baskerville&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
-      background-color: #121212;
-      color: white;
+      margin: 0;
+      font-family: 'Cascadia Code', monospace;
+      background: linear-gradient(145deg, #0f0f0f, #1b1b1b);
+      color: #f0f0f0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
     }
-    input, button {
-      margin: 8px;
-      padding: 10px;
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(94, 23, 235, 0.4);
+    }
+
+    h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+      color: #FF914D;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
       font-size: 16px;
+      background: #2c2c2c;
+      color: white;
     }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: #5E17EB;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #7f3ffc;
+    }
+
+    p {
+      font-size: 0.85rem;
+      margin-top: 18px;
+      color: #ccc;
+    }
+
     #mission {
       margin-top: 20px;
-      max-width: 500px;
-      text-align: center;
+      font-size: 1rem;
+      color: #ffffff;
+    }
+
+    #mission strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #FF914D;
     }
   </style>
 </head>
 <body>
-  <h2>Agent Mission Access</h2>
-  <input type="text" id="codenameInput" placeholder="Enter Codename">
-  <input type="text" id="passcodeInput" placeholder="Enter Passcode">
-  <button onclick="verifyAgent()">Access Mission</button>
-  <p>Please allow a few seconds for the server to fetch your information through a secure network.</p>
-  <div id="mission"></div>
+  <div class="card">
+    <h2>Agent Mission Access</h2>
+    <input type="text" id="codenameInput" placeholder="Codename">
+    <input type="text" id="passcodeInput" placeholder="Passcode">
+    <button onclick="verifyAgent()">Access Mission</button>
+    <p>Secure network engaged. Verifying agent credentials...</p>
+    <div id="mission"></div>
+  </div>
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -78,7 +141,7 @@
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            missionDiv.innerHTML = `<strong>Mission Brief:</strong><br>${data.mission}`;
+            missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
           } else {
             missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
           }
@@ -93,3 +156,4 @@
   </script>
 </body>
 </html>
+
