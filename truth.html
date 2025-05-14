@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="menustyles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THE COMPANY // Agent Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Cascadia+Code&display=swap" rel="stylesheet">
+  <style>
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cascadia Code', monospace;
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+     
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 40px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      height: 600px;
+      width: 700px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      margin-bottom: 25px;
+      letter-spacing: 1.5px;
+      color: #FF914D;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    a.button {
+      display: block;
+      background-color: #FF914D;
+      color: #000;
+      text-decoration: none;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: #e07b3c;
+    }
+
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      a.button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+
+    .watermark-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 80px,
+      rgba(255, 255, 255, 0.02) 80px,
+      rgba(255, 255, 255, 0.02) 160px
+    );
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 40px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.035);
+  text-align: center;
+  align-content: flex-start;
+  font-family: 'Cascadia Code', monospace;
+  line-height: 1.5;
+  background-repeat: repeat;
+  background-size: contain;
+  overflow: hidden;
+}
+
+.watermark-bg::before {
+  content: 'THE COMPANY';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 100px,
+    transparent 100px,
+    transparent 200px
+  );
+  transform: rotate(-15deg);
+  z-index: 0;
+}
+
+  </style>
+</head>
+<body>
+  <nav class="menu">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <ul class="menu-items">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="mission.html">View My Missions</a></li>
+      <li><a href="otp.html">OTP Verification</a></li>
+      <li><a href="admin.html">Admin Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div data-tf-live="01JV8E1QMHQNPVF4KS5N9RSB39"></div>
+  </div>
+
+  <div class="watermark-bg" aria-hidden="true"></div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.querySelector('.menu-items');
+      menu.classList.toggle('show');
+    }
+  </script>
+
+  <!-- ✅ Embed Typeform script just before the closing body tag -->
+  <script src="https://embed.typeform.com/next/embed.js"></script>
+</body>
+</html>
