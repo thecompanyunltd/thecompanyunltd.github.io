@@ -1,0 +1,68 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Menu Container */
+  .menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+  }
+  
+  /* Menu Toggle Button */
+  .menu-toggle {
+    display: none;
+    font-size: 24px;
+    background: rgba(78, 10, 50, 0.73);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Menu Items */
+  .menu-items {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+  
+  .menu-items li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    border: 1px solid rgb(109, 20, 211);
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .menu-items {
+      display: none;
+      flex-direction: column;
+      background: transparent;
+      backdrop-filter: blur(10px);
+    
+    }
+  
+    .menu-items.show {
+      display: flex;
+      background: transparent;
+    }
+  
+    .menu-toggle {
+      display: block;
+      background: transparent;
+    }
+  }
+  

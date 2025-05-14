@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="menustyles.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent Mission Access</title>
@@ -13,7 +14,7 @@
     body {
       margin: 0;
       font-family: 'Cascadia Code', monospace;
-      background: linear-gradient(145deg, #0f0f0f, #1b1b1b);
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
       color: #f0f0f0;
       display: flex;
       justify-content: center;
@@ -86,9 +87,53 @@
       margin-bottom: 8px;
       color: #FF914D;
     }
+
+    .watermark-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  grid-template-rows: repeat(auto-fill, 120px);
+  opacity: 1;
+}
+
+.watermark-bg::before {
+  content: '';
+  display: none; /* cleaner for accessibility */
+}
+
+.watermark-bg span {
+  pointer-events: auto;
+  user-select: none;
+  font-family: 'Cascadia Code', monospace;
+  color: rgba(255, 255, 255, 0.03);
+  font-size: 36px;
+  font-weight: bold;
+  transform: rotate(-20deg) skew(-15deg);
+  text-align: center;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.watermark-bg span:hover {
+  color: rgba(255, 255, 255, 0.15);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
   </style>
+  
 </head>
+
 <body>
+    <div class="watermark-bg" aria-hidden="true"></div>
+
   <div class="card">
     <h2>Agent Mission Access</h2>
     <input type="text" id="codenameInput" placeholder="Codename">
@@ -165,4 +210,48 @@
     };
   </script>
 </body>
+
+<body>
+    <nav class="menu">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="menu-items">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mission.html">View My Missions</a></li>
+        <li><a href="otp.html">OTP Verification</a></li>
+        <li><a href="admin.html">Admin Login</a></li>
+      </ul>
+    </nav>
+  
+    <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu-items');
+        menu.classList.toggle('show');
+      }
+    </script>
+    <script>
+        const container = document.querySelector('.watermark-bg');
+        const input = document.getElementById('codenameInput');
+      
+        const cols = Math.ceil(window.innerWidth / 250);
+        const rows = Math.ceil(window.innerHeight / 120);
+        const total = cols * rows;
+      
+        // Initial rendering of spans
+        for (let i = 0; i < total; i++) {
+          const span = document.createElement('span');
+          span.textContent = 'THE COMPANY';
+          container.appendChild(span);
+        }
+      
+        // Listen to codename input and update watermark text live
+        input.addEventListener('input', (e) => {
+          const value = e.target.value.trim().toUpperCase() || 'THE COMPANY';
+          document.querySelectorAll('.watermark-bg span').forEach(span => {
+            span.textContent = 'Agent ' + value;
+          });
+        });
+      </script>
+      
+      
+  </body>
 </html>
