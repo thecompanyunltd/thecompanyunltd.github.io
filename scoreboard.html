@@ -168,10 +168,6 @@
       </div>
     </div>
 
-    <div class="admin-unlock">
-      <input type="password" id="adminPIN" placeholder="Enter Admin PIN to update score" />
-      <button onclick="unlockControls()">Unlock</button>
-    </div>
 
     <div class="controls" id="scoreControls">
       <button onclick="adjustScore('loyalist', 1)">+1 Loyalist</button>
@@ -180,14 +176,6 @@
       <button onclick="adjustScore('rebel', -1)">-1 Rebel</button>
     </div>
   </div>
-
-  <script>
-    let scores = {
-      loyalist: 0,
-      rebel: 0
-    };
-
-  </script>
 
 </body>
 </html>
