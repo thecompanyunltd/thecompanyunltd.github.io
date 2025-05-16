@@ -187,20 +187,6 @@
       rebel: 0
     };
 
-    function adjustScore(faction, delta) {
-      scores[faction] = Math.max(0, scores[faction] + delta);
-      document.getElementById(faction + 'Score').textContent = scores[faction];
-    }
-
-    function unlockControls() {
-      const pin = document.getElementById("adminPIN").value;
-      if (pin === "letmein123") {
-        document.getElementById("scoreControls").style.display = "flex";
-        document.querySelector(".admin-unlock").style.display = "none";
-      } else {
-        alert("Incorrect PIN. Try again.");
-      }
-    }
   </script>
 
 </body>
