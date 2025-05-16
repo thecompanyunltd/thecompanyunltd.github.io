@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Company | Loyalty Check</title>
+  <style>
+    body {
+      font-family: 'Cascadia Code', monospace;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
+    }
+    .rebel-message {
+      color: red;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px black;
+      animation: flicker 0.1s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Enter Codename and Passcode</h1>
+  <input type="text" id="codename" placeholder="Codename">
+  <input type="text" id="passcode" placeholder="Passcode">
+  <button onclick="checkLoyalty()">Verify</button>
+
+  <div id="result" style="margin-top: 20px;"></div>
+  <div id="rebel" class="rebel-message" style="display: none; margin-top: 20px;"></div>
+
+  <script>
+    const agents = [
+      { codename: "GLADIO", passcode: "Bran Cete", faction: "Rebel" },
+      { codename: "ORION", passcode: "Prime Tallon", faction: "Rebel" },
+      { codename: "MKULTRA", passcode: "Zirahs", faction: "Rebel" },
+      { codename: "ECLIPSE", passcode: "Belcam", faction: "Loyalist" },
+      { codename: "PHOENIX", passcode: "Change Re", faction: "Loyalist" },
+      { codename: "APOLLYON", passcode: "End Fanzil", faction: "CEO", rebelOverride: true },
+      { codename: "SPECTRE", passcode: "Segnagnoise", faction: "Loyalist" },
+      { codename: "ARTICHOKE", passcode: "Rashy", faction: "Rebel" },
+      { codename: "TEMPLAR", passcode: "Molter", faction: "Rebel" },
+      { codename: "RAVENWOOD", passcode: "Iron Point", faction: "Loyalist" },
+      { codename: "BLACKBIRD", passcode: "Ray D Achnor", faction: "Loyalist" }
+    ];
+
+    function checkLoyalty() {
+      const codename = document.getElementById('codename').value.trim().toUpperCase();
+      const passcode = document.getElementById('passcode').value.trim();
+      const result = document.getElementById('result');
+      const rebel = document.getElementById('rebel');
+      result.innerHTML = '';
+      rebel.style.display = 'none';
+
+      const agent = agents.find(a => a.codename === codename && a.passcode === passcode);
+      
+      if (agent) {
+        result.textContent = "You are a loyalist.";
+        if (agent.faction === "Rebel" || agent.rebelOverride) {
+          setTimeout(() => {
+            rebel.textContent = "You are actually a REBEL, hushhh";
+            rebel.style.display = 'block';
+            setTimeout(() => {
+              rebel.style.display = 'none';
+            }, 6000);
+          }, 2000);
+        }
+      } else {
+        result.textContent = "Access Denied.";
+      }
+    }
+  </script>
+
+</body>
+</html>
