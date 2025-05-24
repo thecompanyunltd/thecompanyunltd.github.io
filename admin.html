@@ -73,6 +73,16 @@
       font-size: 14px;
       text-align: center;
     }
+
+      select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
+
   </style>
 </head>
 <body>
@@ -88,7 +98,22 @@
 <!-- Hidden until password is correct -->
 <div class="admin-box" id="adminBox">
   <h2>Update Agent Mission</h2>
-  <input type="text" id="codename" placeholder="Codename (e.g., gladio)">
+  <select id="codename">
+  <option value="">-- Select Agent --</option>
+  <option value="gladio">GLADIO</option>
+  <option value="orion">ORION</option>
+  <option value="mkultra">MKULTRA</option>
+  <option value="eclipse">ECLIPSE</option>
+  <option value="phoenix">PHOENIX</option>
+  <option value="apollyon">APOLLYON</option>
+  <option value="spectre">SPECTRE</option>
+  <option value="artichoke">ARTICHOKE</option>
+  <option value="templar">TEMPLAR</option>
+  <option value="ravenwood">RAVENWOOD</option>
+  <option value="blackbird">BLACKBIRD</option>
+  <option value="ALL">🔥 ALL AGENTS</option>
+</select>
+
   <textarea id="missionText" rows="6" placeholder="Enter new mission text here..."></textarea>
   <button onclick="updateMission()">Push Mission</button>
   <div class="status" id="status"></div>
@@ -127,23 +152,38 @@
   };
 
   window.updateMission = async function () {
-    const codename = document.getElementById("codename").value.trim().toLowerCase();
-    const missionText = document.getElementById("missionText").value.trim();
-    const statusDiv = document.getElementById("status");
+  const codename = document.getElementById("codename").value.trim().toLowerCase();
+  const missionText = document.getElementById("missionText").value.trim();
+  const statusDiv = document.getElementById("status");
 
-    if (!codename || !missionText) {
-      statusDiv.textContent = "⚠️ Codename and mission text are required.";
-      return;
-    }
+  if (!codename || !missionText) {
+    statusDiv.textContent = "⚠️ Codename and mission text are required.";
+    return;
+  }
 
-    try {
+  try {
+    if (codename === "all") {
+      const codenames = [
+        "gladio", "orion", "mkultra", "eclipse", "phoenix",
+        "apollyon", "spectre", "artichoke", "templar", "ravenwood", "blackbird"
+      ];
+
+      const updates = codenames.map(name =>
+        setDoc(doc(db, "missions", name), { mission: missionText })
+      );
+
+      await Promise.all(updates);
+      statusDiv.textContent = "✅ Mission successfully pushed to ALL agents.";
+    } else {
       await setDoc(doc(db, "missions", codename), { mission: missionText });
-      statusDiv.textContent = `✅ Mission for ${codename} successfully updated.`;
-    } catch (error) {
-      console.error(error);
-      statusDiv.textContent = "❌ Error updating mission. Check console for details.";
+      statusDiv.textContent = `✅ Mission for ${codename.toUpperCase()} successfully updated.`;
     }
-  };
+  } catch (error) {
+    console.error(error);
+    statusDiv.textContent = "❌ Error updating mission. Check console for details.";
+  }
+};
+
 </script>
 
 </body>
