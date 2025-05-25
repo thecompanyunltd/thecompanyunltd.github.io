@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Faction Scoreboard | THE COMPANY</title>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -20,82 +20,74 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
       background-color: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 50px 30px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px 20px;
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(94, 23, 235, 0.4);
+      box-shadow: 0 0 20px rgba(94, 23, 235, 0.3);
       max-width: 600px;
-      width: 90%;
+      width: 100%;
       text-align: center;
     }
 
     h1 {
       font-family: 'Libre Baskerville', serif;
-      font-size: 32px;
-      margin-bottom: 40px;
+      font-size: 28px;
+      margin-bottom: 30px;
       letter-spacing: 2px;
       color: #FF914D;
-      text-shadow: 0 0 12px #FF914D;
     }
 
     .scoreboard {
       display: flex;
       justify-content: space-between;
       gap: 20px;
+      flex-wrap: wrap;
     }
 
     .faction {
-      flex: 1;
-      padding: 30px;
+      flex: 1 1 200px;
+      padding: 25px;
       border-radius: 15px;
       background-color: rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 0 12px #000;
-      transition: transform 0.3s ease;
-    }
-
-    .faction:hover {
-      transform: scale(1.03);
+      box-shadow: inset 0 0 10px #000;
+      min-width: 150px;
     }
 
     .faction-title {
       font-family: 'Libre Baskerville', serif;
-      font-size: 20px;
+      font-size: 18px;
       margin-bottom: 10px;
       letter-spacing: 1px;
-    }
-
-    #loyalist .faction-title {
-      color: #17eb5e;
-      text-shadow: 0 0 8px #17eb5e;
-    }
-
-    #rebel .faction-title {
-      color: #ff3b3b;
-      text-shadow: 0 0 8px #ff3b3b;
+      color: #ffffff;
     }
 
     .score {
-      font-size: 48px;
+      font-size: 44px;
       font-weight: bold;
       color: #FF914D;
-      text-shadow: 0 0 10px #FF914D;
     }
 
     @media (max-width: 500px) {
-      h1 {
-        font-size: 24px;
-      }
-
-      .score {
-        font-size: 36px;
+      .scoreboard {
+        flex-direction: column;
+        gap: 15px;
       }
 
       .faction {
         padding: 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .score {
+        font-size: 36px;
       }
     }
   </style>
