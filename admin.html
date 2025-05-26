@@ -114,8 +114,18 @@
   <option value="ALL">🔥 ALL AGENTS</option>
 </select>
 
-  <textarea id="missionText" rows="6" placeholder="Enter new mission text here..."></textarea>
-  <button onclick="updateMission()">Push Mission</button>
+  <input type="text" id="missionName" placeholder="Mission Name">
+<textarea id="missionText" rows="5" placeholder="Mission Description"></textarea>
+<input type="text" id="datePosted" placeholder="Date Posted (e.g. 24 May 2025)">
+<select id="missionStatus">
+  <option value="">-- Select Status --</option>
+  <option value="PENDING">PENDING</option>
+  <option value="COMPLETED">COMPLETED</option>
+  <option value="FAILED">FAILED</option>
+</select>
+<button onclick="updateMission()">Push Mission</button>
+<div class="status" id="status"></div>
+
   <div class="status" id="status"></div>
 </div>
 
@@ -153,11 +163,26 @@
 
   window.updateMission = async function () {
   const codename = document.getElementById("codename").value.trim().toLowerCase();
-  const missionText = document.getElementById("missionText").value.trim();
+  const mission = document.getElementById("missionText").value.trim();
+  const missionName = document.getElementById("missionName").value.trim();
+  const datePosted = document.getElementById("datePosted").value.trim();
+  const status = document.getElementById("missionStatus").value.trim();
   const statusDiv = document.getElementById("status");
 
-  if (!codename || !missionText) {
-    statusDiv.textContent = "⚠️ Codename and mission text are required.";
+  if (!codename) {
+    statusDiv.textContent = "⚠️ Please enter an agent codename.";
+    return;
+  }
+
+  // Only include fields that are not empty
+  const missionData = {};
+  if (missionName) missionData["Mission Name"] = missionName;
+  if (mission) missionData["mission"] = mission;
+  if (datePosted) missionData["Date Posted"] = datePosted;
+  if (status) missionData["status"] = status;
+
+  if (Object.keys(missionData).length === 0) {
+    statusDiv.textContent = "⚠️ Please fill in at least one field to update.";
     return;
   }
 
@@ -169,20 +194,22 @@
       ];
 
       const updates = codenames.map(name =>
-        setDoc(doc(db, "missions", name), { mission: missionText })
+        setDoc(doc(db, "missions", name), missionData, { merge: true })
       );
 
       await Promise.all(updates);
-      statusDiv.textContent = "✅ Mission successfully pushed to ALL agents.";
+      statusDiv.textContent = "✅ Mission fields successfully updated for ALL agents.";
     } else {
-      await setDoc(doc(db, "missions", codename), { mission: missionText });
-      statusDiv.textContent = `✅ Mission for ${codename.toUpperCase()} successfully updated.`;
+      await setDoc(doc(db, "missions", codename), missionData, { merge: true });
+      statusDiv.textContent = `✅ Mission fields for ${codename.toUpperCase()} updated.`;
     }
   } catch (error) {
     console.error(error);
     statusDiv.textContent = "❌ Error updating mission. Check console for details.";
   }
 };
+
+
 
 </script>
 
