@@ -195,11 +195,18 @@
           const docRef = doc(db, "missions", codename);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            const data = docSnap.data();
-            missionDiv.innerHTML = `<strong>Mission Brief:</strong>${data.mission}`;
-          } else {
-            missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
-          }
+              const data = docSnap.data();
+
+              missionDiv.innerHTML = `
+                ${data["Mission Name"] ? `<strong>Mission Name:</strong> ${data["Mission Name"]}<br><br>` : ""}
+                ${data["Date Posted"] ? `<strong>Date Posted:</strong> ${data["Date Posted"]}<br><br>` : ""}
+                ${data.mission ? `<strong>Mission Brief:</strong><br>${data.mission}<br><br>` : ""}
+                ${data.status ? `<strong>Status:</strong> ${data.status}` : ""}
+              `;
+            } else {
+              missionDiv.innerHTML = `<strong>Mission Status:</strong> Pending...`;
+            }
+
         } catch (e) {
           console.error(e);
           missionDiv.innerHTML = "❌ Error fetching mission.";
