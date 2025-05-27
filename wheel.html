@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wheel of Doom - Admin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code&display=swap');
+
+    body {
+      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
+      color: white;
+      font-family: 'Cascadia Code', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: #FF914D;
+    }
+
+    canvas {
+      border: 8px solid #5E17EB;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #5E17EB;
+      margin-bottom: 20px;
+      background: #111;
+    }
+
+    button, input {
+      background: #FF914D;
+      border: none;
+      padding: 8px 14px;
+      margin: 5px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Cascadia Code', monospace;
+    }
+
+    input[type="text"] {
+      background: white;
+      color: black;
+      font-family: inherit;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #FF914D;
+    }
+
+    .input-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #5E17EB;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      position: relative;
+      width: 320px;
+    }
+
+    .locked-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 32, 39, 0.95);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #FF914D;
+      z-index: 2;
+    }
+
+    .locked-overlay input {
+      margin-top: 10px;
+      background: white;
+      color: black;
+      width: 140px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎯 WHEEL OF DOOM — ADMIN CONTROL</h2>
+
+  <div class="input-container" id="protectedInput">
+    <div class="locked-overlay" id="lockOverlay">
+      🔐 Enter password to unlock
+      <input type="password" id="passwordInput" placeholder="Password" />
+      <button onclick="unlockInput()">Unlock</button>
+    </div>
+
+    <label>Enter Agent Codenames (max 5):</label>
+    <input type="text" id="nameInput" placeholder="Enter codename" />
+    <button onclick="addName()">Add Agent</button>
+    <button onclick="clearNames()">Reset Wheel</button>
+  </div>
+
+  <canvas id="wheel" width="400" height="400"></canvas>
+  <button id="spinBtn" onclick="spinWheel()" disabled>Spin the Wheel</button>
+  <div id="result"></div>
+
+  <script>
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const maxSlots = 5;
+    const names = [];
+    const defaultLabel = "No name";
+    const colors = ["#5E17EB", "#FF914D", "#6C5B7B", "#00B8A9", "#C06C84"];
+
+    let angle = 0;
+    let spinning = false;
+
+    function drawWheel() {
+      const arc = (2 * Math.PI) / maxSlots;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < maxSlots; i++) {
+        const name = names[i] || defaultLabel;
+        const start = angle + i * arc;
+
+        ctx.beginPath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 200, start, start + arc);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(200, 200);
+        ctx.rotate(start + arc / 2);
+        ctx.fillStyle = "white";
+        ctx.textAlign = "right";
+        ctx.font = "bold 16px Cascadia Code";
+        ctx.fillText(name.toUpperCase(), 180, 5);
+        ctx.restore();
+      }
+    }
+
+    function addName() {
+      const input = document.getElementById("nameInput");
+      const name = input.value.trim();
+
+      if (!name) {
+        alert("Enter a codename.");
+        return;
+      }
+
+      if (names.length >= maxSlots) {
+        alert("Wheel is full.");
+        return;
+      }
+
+      names.push(name);
+      input.value = "";
+      drawWheel();
+
+      if (names.length === maxSlots) {
+        document.getElementById("spinBtn").disabled = false;
+      }
+    }
+
+    function clearNames() {
+      names.length = 0;
+      document.getElementById("spinBtn").disabled = true;
+      drawWheel();
+      document.getElementById("result").textContent = "";
+    }
+
+    function spinWheel() {
+      if (spinning || names.length !== maxSlots) return;
+      spinning = true;
+
+      const spinTime = 5000;
+      const spinAngle = Math.random() * 360 + 1440;
+      let start = null;
+
+      function animate(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+
+        angle += (spinAngle * easeOut(progress / spinTime)) * Math.PI / 180;
+        drawWheel();
+
+        if (progress < spinTime) {
+          requestAnimationFrame(animate);
+        } else {
+          angle %= 2 * Math.PI;
+          const selectedIndex = Math.floor(maxSlots - (angle / (2 * Math.PI)) * maxSlots) % maxSlots;
+          const selected = names[selectedIndex] || defaultLabel;
+          document.getElementById("result").textContent = `☠️ The victim is: ${selected.toUpperCase()}`;
+          spinning = false;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function easeOut(t) {
+      return --t * t * t + 1;
+    }
+
+    function unlockInput() {
+      const password = document.getElementById("passwordInput").value;
+      if (password === "12345") {
+        document.getElementById("lockOverlay").style.display = "none";
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    drawWheel();
+  </script>
+</body>
+</html>
