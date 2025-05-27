@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="menustyles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code&family=Libre+Baskerville&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cascadia Code', monospace;
+      background-color: #0d0d0d;
+      color: #e6e6e6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      color: #FF914D;
+      margin-top: 40px;
+    }
+
+    .login-form, .dashboard {
+      background-color: #1c1c1c;
+      border: 2px solid #5E17EB;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 30px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 20px rgba(94, 23, 235, 0.2);
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #111;
+      border: 1px solid #5E17EB;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .login-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #5E17EB;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .field-row {
+      margin: 10px 0;
+      padding: 8px;
+      border-bottom: 1px solid #333;
+    }
+
+    .label {
+      color: #FF914D;
+      font-weight: bold;
+      display: inline-block;
+      width: 160px;
+    }
+
+    nav.menu {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .login-form, .dashboard {
+        width: 90%;
+      }
+
+      .label {
+        width: 100%;
+        display: block;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Agent Dashboard</h1>
+
+  <div class="login-form" id="loginForm">
+    <input type="text" id="codenameInput" placeholder="Codename">
+    <input type="password" id="passcodeInput" placeholder="Passcode">
+    <button onclick="verifyAgent()">Access Profile</button>
+    <p id="errorMessage" class="error" style="display: none;"></p>
+  </div>
+
+  <div class="dashboard" id="dashboard" style="display: none;"></div>
+
+  <nav class="menu">
+    <ul class="menu-items">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="mission.html">Missions</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="otp.html">OTP</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
+      authDomain: "thecompanymissions.firebaseapp.com",
+      projectId: "thecompanymissions",
+      storageBucket: "thecompanymissions.appspot.com",
+      messagingSenderId: "1025657294999",
+      appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const validKeys = {
+      "gladio|bran cete": true,
+      "orion|prime tallon": true,
+      "mkultra|zirahs": true,
+      "eclipse|belcam": true,
+      "phoenix|change re": true,
+      "apollyon|end fanzil": true,
+      "spectre|segnagnoise": true,
+      "artichoke|rashy": true,
+      "templar|molter": true,
+      "ravenwood|iron point": true,
+      "blackbird|ray d achnor": true
+    };
+
+    window.verifyAgent = async function () {
+      const codename = document.getElementById("codenameInput").value.trim().toLowerCase();
+      const passcode = document.getElementById("passcodeInput").value.trim().toLowerCase();
+      const key = `${codename}|${passcode}`;
+      const loginForm = document.getElementById("loginForm");
+      const dashboard = document.getElementById("dashboard");
+      const errorMessage = document.getElementById("errorMessage");
+
+      if (validKeys[key]) {
+        try {
+          const docRef = doc(db, "missions", codename);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            loginForm.style.display = "none";
+            dashboard.style.display = "block";
+            errorMessage.style.display = "none";
+
+            dashboard.innerHTML = `
+              <div class="field-row"><span class="label">Codename:</span> ${data.codename}</div>
+              <div class="field-row"><span class="label">Mission Name:</span> ${data["Mission Name"]}</div>
+              <div class="field-row"><span class="label">Mission Brief:</span> ${data.mission}</div>
+              <div class="field-row"><span class="label">Mission Status:</span> ${data.status}</div>
+              <div class="field-row"><span class="label">Strikes:</span> ${data.strikes}</div>
+              <div class="field-row"><span class="label">Date Posted:</span> ${data["Date Posted"]}</div>
+            `;
+          } else {
+            errorMessage.textContent = "❌ Profile not found.";
+            errorMessage.style.display = "block";
+          }
+        } catch (error) {
+          console.error(error);
+          errorMessage.textContent = "❌ Error retrieving data.";
+          errorMessage.style.display = "block";
+        }
+      } else {
+        errorMessage.textContent = "❌ Access Denied. Invalid credentials.";
+        errorMessage.style.display = "block";
+      }
+    };
+  </script>
+</body>
+</html>
