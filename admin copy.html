@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="menustyles.css" />
+  <meta charset="UTF-8">
+  <title>Admin Control Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .admin-box {
+      background: #2c2c2c;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+
+    .login-box {
+      background: #2c2c2c;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffc8;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #00ffc8;
+      color: #000;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #00ddb4;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+      select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Login First -->
+<div class="login-box" id="loginBox">
+  <h2>Admin Login</h2>
+  <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+  <button onclick="verifyLogin()">Login</button>
+  <div class="status" id="loginStatus"></div>
+</div>
+
+<!-- Hidden until password is correct -->
+<div class="admin-box" id="adminBox">
+  <h2>Update Agent Mission</h2>
+  <select id="codename">
+  <option value="">-- Select Agent --</option>
+  <option value="gladio">GLADIO</option>
+  <option value="orion">ORION</option>
+  <option value="mkultra">MKULTRA</option>
+  <option value="eclipse">ECLIPSE</option>
+  <option value="phoenix">PHOENIX</option>
+  <option value="apollyon">APOLLYON</option>
+  <option value="spectre">SPECTRE</option>
+  <option value="artichoke">ARTICHOKE</option>
+  <option value="templar">TEMPLAR</option>
+  <option value="ravenwood">RAVENWOOD</option>
+  <option value="blackbird">BLACKBIRD</option>
+  <option value="ALL">🔥 ALL AGENTS</option>
+</select>
+
+  <input type="text" id="missionName" placeholder="Mission Name">
+<textarea id="missionText" rows="5" placeholder="Mission Description"></textarea>
+<input type="text" id="datePosted" placeholder="Date Posted (e.g. 24 May 2025)">
+<select id="missionStatus">
+  <option value="">-- Select Status --</option>
+  <option value="PENDING">PENDING</option>
+  <option value="COMPLETED">COMPLETED</option>
+  <option value="FAILED">FAILED</option>
+</select>
+<button onclick="updateMission()">Push Mission</button>
+<div class="status" id="status"></div>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script type="module">
+  import {
+  getDoc,        // ✅ ADD THIS
+  updateDoc,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-xwBCeBR9gOZYuy5v6jRWcsqFzxqClW0",
+    authDomain: "thecompanymissions.firebaseapp.com",
+    projectId: "thecompanymissions",
+    storageBucket: "thecompanymissions.firebasestorage.app",
+    messagingSenderId: "1025657294999",
+    appId: "1:1025657294999:web:69c6bbb95259b5af5259d2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Password Gate
+  const ADMIN_PASSWORD = "12345";
+  window.verifyLogin = function () {
+    const input = document.getElementById("adminPassword").value;
+    const loginBox = document.getElementById("loginBox");
+    const adminBox = document.getElementById("adminBox");
+    const loginStatus = document.getElementById("loginStatus");
+
+    if (input === ADMIN_PASSWORD) {
+      loginBox.style.display = "none";
+      adminBox.style.display = "block";
+    } else {
+      loginStatus.innerHTML = "❌ Incorrect password.";
+    }
+  };
+
+
+window.updateMission = async function () {
+  const codename = document.getElementById("codename").value.trim().toLowerCase();
+  const mission = document.getElementById("missionText").value.trim();
+  const missionName = document.getElementById("missionName").value.trim();
+  const datePosted = document.getElementById("datePosted").value.trim();
+  const status = document.getElementById("missionStatus").value.trim();
+  const statusDiv = document.getElementById("status");
+
+  if (!codename || codename === "") {
+    statusDiv.textContent = "⚠️ Please select an agent.";
+    return;
+  }
+
+  const missionPayload = {
+    mission,
+    "Mission Name": missionName,
+    "Date Posted": datePosted,
+    status
+  };
+
+  const agentList = codename === "all"
+    ? [
+        "gladio", "orion", "mkultra", "eclipse", "phoenix",
+        "apollyon", "spectre", "artichoke", "templar", "ravenwood", "blackbird"
+      ]
+    : [codename];
+
+  try {
+    for (const agent of agentList) {
+      const agentRef = doc(db, "missions", agent);
+      const agentSnap = await getDoc(agentRef);
+      const passcode = agentSnap.exists() ? agentSnap.data().passcode : "";
+
+      // Update "current" field on main document
+      await updateDoc(agentRef, {
+        codename: agent,
+        passcode: passcode || "",
+        current: missionPayload
+      });
+
+      // Add to history subcollection
+      const historyRef = collection(agentRef, "history");
+      await addDoc(historyRef, missionPayload);
+    }
+
+    statusDiv.textContent = codename === "all"
+      ? "✅ Mission updated and logged for ALL agents."
+      : `✅ Mission updated and logged for ${codename.toUpperCase()}.`;
+  } catch (error) {
+    console.error("❌ Error updating mission:", error);
+    statusDiv.textContent = "❌ Something went wrong. Check the console.";
+  }
+};
+</script>
+
+</body>
+
+<body>
+    <nav class="menu">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="menu-items">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mission.html">View My Missions</a></li>
+        <li><a href="otp.html">OTP Verification</a></li>
+        <li><a href="admin.html">Admin Login</a></li>
+      </ul>
+    </nav>
+  
+    <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu-items');
+        menu.classList.toggle('show');
+      }
+    </script>
+  </body>
+</html>
