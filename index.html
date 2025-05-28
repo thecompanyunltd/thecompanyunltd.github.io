@@ -4,171 +4,107 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>THE COMPANY // Agent Access</title>
-  <link rel="stylesheet" href="menustyles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Cascadia+Code&display=swap" rel="stylesheet">
+  
   <style>
-    * {
-      box-sizing: border-box;
-    }
+   * {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Cascadia Code', monospace;
-      background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364, #0d0d0d);
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cascadia Code', monospace;
+  background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364, #0d0d0d);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    .logo-container {
-      margin-top: 40px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
 
-    .logo-container img {
-      width: 120px;
-      height: auto;
-      border: 2px solid #5E17EB;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #5E17EB;
-    }
+.logo-container img {
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid #5E17EB;
+  box-shadow: 0 0 8px #5E17EB;
+  margin-top: 30px;
+}
 
-    .container {
-      background-color: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 40px 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(10px);
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-      z-index: 1;
-    }
 
-    h1 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 28px;
-      margin-bottom: 25px;
-      letter-spacing: 1.5px;
-      color: #FF914D;
-    }
+.container {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 40px 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  margin-top: 40px;
+}
 
-    p {
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
+h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 28px;
+  margin-bottom: 25px;
+  letter-spacing: 1.5px;
+  color: #FF914D;
+}
 
-    a.button {
-      display: block;
-      background-color: #5E17EB;
-      color: #000;
-      text-decoration: none;
-      padding: 14px;
-      margin: 10px 0;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
+p {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
 
-    a.button:hover {
-      background-color: #e07b3c;
-    }
+a.button {
+  display: block;
+  background-color: #5E17EB;
+  color: #000;
+  text-decoration: none;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
 
-    nav.menu {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 10;
-    }
+a.button:hover {
+  background-color: #e07b3c;
+  color: white;
+}
 
-    .menu-toggle {
-      background: none;
-      border: none;
-      color: #FF914D;
-      font-size: 26px;
-      cursor: pointer;
-    }
+footer.site-footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  font-size: 0.9rem;
+  color: #aaa;
+  border-top: 1px solid #5E17EB22;
+  margin-top: 60px;
+}
 
-    .menu-items {
-      display: none;
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px #5E17EB;
-    }
-
-    .menu-items.show {
-      display: block;
-    }
-
-    .menu-items li {
-      margin: 8px 0;
-    }
-
-    .menu-items li a {
-      color: #FF914D;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer.site-footer {
-      text-align: center;
-      padding: 40px 0 20px;
-      font-size: 0.9rem;
-      color: #aaa;
-      border-top: 1px solid #5E17EB22;
-      margin-top: 60px;
-    }
-
-    @media (max-width: 400px) {
-      h1 {
-        font-size: 22px;
-      }
-
-      p, a.button {
-        font-size: 14px;
-      }
-
-      .menu-toggle {
-        font-size: 22px;
-      }
-    }
   </style>
 </head>
 <body>
-
-  <nav class="menu">
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <ul class="menu-items">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="mission.html">View My Missions</a></li>
-      <li><a href="otp.html">OTP Verification</a></li>
-      <li><a href="admin.html">Admin Login</a></li>
-      <li><a href="truth.html">Tell Truths</a></li>
-    </ul>
-  </nav>
-
   <div class="logo-container">
-    <img src="GOV.png" alt="THE COMPANY UNLTD. Logo" />
-  </div>
-
+      <a href="index.html">
+        <img src="GOV.png" alt="THE COMPANY UNLTD. Logo" />
+      </a>
+    </div>
   <div class="container">
     <h1>THE COMPANY</h1>
     <p>Welcome, agent. Proceed below to verify your identity or access your mission briefing.</p>
     <a href="otp.html" class="button">Verify Identity (OTP)</a>
-    <a href="mission.html" class="button">Access Mission</a>
+    <a href="profile.html" class="button">Access Mission and View Profile</a>
     <a href="scoreboard.html" class="button">Loyalists vs Rebels Scores</a>
     <a href="loyalty-check.html" class="button">Faction Checker</a>
     <a href="truth.html" class="button">Make a confession or log a finding</a>
     <a href="lvs.html" class="button">Submit an LVS Form</a>
     <a href="https://sites.google.com/view/the-company-agent-portal/home" class="button">Return to Information Website</a>
+    <a href="truth.html" class="button">Tell Truths</a>
     <a href="admin.html" class="button">Admin Login</a>
   </div>
 
@@ -184,4 +120,5 @@
   </script>
 </body>
 </html>
+
 
