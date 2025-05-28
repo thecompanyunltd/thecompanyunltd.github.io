@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="menustyles.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent OTP Lookup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Cascadia+Code&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364, #0d0d0d);
       font-family: 'Inter', sans-serif;
       color: #ffffff;
       display: flex;
@@ -28,7 +27,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 30px 20px;
       border-radius: 15px;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.808);
       backdrop-filter: blur(8px);
       text-align: center;
       width: 100%;
@@ -44,7 +43,7 @@
 
     input {
       padding: 12px;
-      width: 100%;
+      width: 93%;
       border-radius: 8px;
       border: none;
       font-size: 16px;
@@ -91,44 +90,31 @@
       }
     }
 
-    .watermark-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 250px);
-  grid-template-rows: repeat(auto-fill, 120px);
-  opacity: 1;
+footer.site-footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  font-size: 0.9rem;
+  color: #aaa;
+  border-top: 1px solid #5E17EB22;
+  margin-top: 60px;
+}  
+.logo-container img {
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid #5E17EB;
+  box-shadow: 0 0 8px #5E17EB;
+  margin-top: 30px;
 }
-
-.watermark-bg span {
-  user-select: none;
-  pointer-events: auto;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.035);
-  transform: rotate(-20deg) skew(-15deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.watermark-bg span:hover {
-  color: rgba(255, 255, 255, 0.15);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-}
-
   </style>
 </head>
 <body>
-    <div class="watermark-bg" aria-hidden="true"></div>
-
+<div class="logo-container">
+      <a href="index.html">
+        <img src="GOV.png" alt="THE COMPANY UNLTD. Logo" />
+      </a>
+    </div>
+    <br>
   <div class="container">
     <h2>Enter Your Agent OTP</h2>
     <input type="text" id="otpInput" placeholder="e.g. 12345678">
@@ -182,24 +168,8 @@
     }
   }
   </script>
+   <footer class="site-footer">
+    &copy; 2025 THE COMPANY UNLTD. All rights reserved.
+  </footer>
 </body>
-
-<body>
-    <nav class="menu">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      <ul class="menu-items">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mission.html">View My Missions</a></li>
-        <li><a href="otp.html">OTP Verification</a></li>
-        <li><a href="admin.html">Admin Login</a></li>
-      </ul>
-    </nav>
-  
-    <script>
-      function toggleMenu() {
-        const menu = document.querySelector('.menu-items');
-        menu.classList.toggle('show');
-      }
-    </script>
-  </body>
 </html>

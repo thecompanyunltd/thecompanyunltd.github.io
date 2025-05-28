@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Company | Loyalty Check</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code&family=Libre+Baskerville&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Cascadia Code', monospace;
-      background-color: #000;
+      background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364, #0d0d0d);
       color: white;
       display: flex;
       flex-direction: column;
@@ -19,6 +20,7 @@
       padding: 10px;
       margin: 8px;
       font-size: 16px;
+      border-radius: 6px;
     }
     .rebel-message {
       color: red;
@@ -31,10 +33,23 @@
       0% { opacity: 1; }
       100% { opacity: 0.5; }
     }
+    .logo-container img {
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid #5E17EB;
+  box-shadow: 0 0 8px #5E17EB;
+  margin-top: 30px;
+}
   </style>
 </head>
 <body>
-
+<div class="logo-container">
+      <a href="index.html">
+        <img src="GOV.png" alt="THE COMPANY UNLTD. Logo" />
+      </a>
+    </div>
+    <br>
   <h1>Enter Codename and Passcode</h1>
   <input type="text" id="codename" placeholder="Codename">
   <input type="text" id="passcode" placeholder="Passcode">

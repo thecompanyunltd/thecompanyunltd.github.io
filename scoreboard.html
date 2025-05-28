@@ -14,7 +14,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Cascadia Code', monospace;
-      background: radial-gradient(ellipse at center, #0f0f0f 0%, #050505 100%);
+      background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364, #0d0d0d);
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -24,11 +24,11 @@
     }
 
     .container {
-      background-color: rgba(255, 255, 255, 0.04);
+      background: black;
       border: 1px solid rgba(255, 255, 255, 0.15);
       padding: 40px 20px;
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(94, 23, 235, 0.3);
+      box-shadow: 0 0 20px rgb(94, 23, 235);
       max-width: 600px;
       width: 100%;
       text-align: center;
@@ -39,7 +39,7 @@
       font-size: 28px;
       margin-bottom: 30px;
       letter-spacing: 2px;
-      color: #FF914D;
+      color: white;
     }
 
     .scoreboard {
@@ -53,8 +53,8 @@
       flex: 1 1 200px;
       padding: 25px;
       border-radius: 15px;
-      background-color: rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 0 10px #000;
+      background-color: rgb(0, 0, 0);
+      
       min-width: 150px;
     }
 
@@ -69,7 +69,7 @@
     .score {
       font-size: 122px;
       font-weight: bold;
-      color: #FF914D;
+      color: white;
     }
 
     @media (max-width: 500px) {
@@ -87,33 +87,24 @@
       }
 
       .score {
-        font-size: 100px;
+        font-size: 36px;
       }
     }
-    .subtext {
-  font-size: 14px;
-  color: #cccccc;
-  margin-top: -20px;
-  margin-bottom: 30px;
-  font-style: italic;
-  letter-spacing: 0.5px;
-}
-
+   
   </style>
 </head>
 <body>
-
+  
   <div class="container">
     <h1>Faction Scoreboard</h1>
-    <p class="subtext">Last updated: 27 May 2025 @ 17:20</p>
     <div class="scoreboard">
       <div class="faction" id="loyalist">
         <div class="faction-title">LOYALISTS</div>
-        <div class="score">17</div>
+        <div class="score">8</div>
       </div>
       <div class="faction" id="rebel">
         <div class="faction-title">REBELS</div>
-        <div class="score">24</div>
+        <div class="score">12</div>
       </div>
     </div>
   </div>
