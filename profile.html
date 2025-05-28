@@ -148,6 +148,50 @@ body {
   border-top: 1px solid #5E17EB22;
   margin-top: 60px;
 }
+.dropdown-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.dropdown-button {
+  background-color: #5E17EB;
+  color: white;
+  font-family: 'Cascadia Code', monospace;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.dropdown-button:hover {
+  background-color: #4913bd;
+}
+
+.dropdown-content {
+  margin-top: 15px;
+  display: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  font-size: 15px;
+  font-family: 'Cascadia Code', monospace;
+  color: #fff;
+}
+
+.dropdown-content ul {
+  padding-left: 20px;
+}
+
+.dropdown-content li {
+  margin-bottom: 10px;
+}
 
   </style>
 </head>
@@ -248,12 +292,23 @@ body {
               <div class="field-row"><span class="label">Mission Brief:</span> ${data.mission}</div>
               <div class="field-row"><span class="label">Mission Status:</span> ${data.status}</div>
               <div class="field-row"><span class="label">Strikes:</span> ${data.strikes}</div>
-               <div class="field-row">
+              <div class="field-row">
                 <span class="label">Quick Links:</span>
                 <a href="loyalty-check.html" style="color:#5900ff;">Faction Checker</a> |
                 <a href="scoreboard.html" style="color:#5900ff;">Scoreboard</a> |
                 <a href="index.html" style="color:#5900ff;">Home</a>
                 </div>
+                <div class="dropdown-container">
+  <button class="dropdown-button" onclick="toggleDropdown()">📜 Punishable Actions & Rules</button>
+  <div id="dropdownContent" class="dropdown-content">
+    <ul>
+      <li>Naming <strong>"THE COMPANY"</strong> in conversation where non-agents are involved.</li>
+      <li>Sharing your <strong>CODENAME</strong>, <strong>PASSCODE</strong>, or <strong>FACTION</strong> with ANYONE (exception: THE COMPANY).</li>
+      <li>NOT participating in group events in some form may result in placement in <strong>THE HOT BOX/WHEEL OF DOOM</strong>.</li>
+      <li>More rules coming soon...</li>
+    </ul>
+  </div>
+</div>
             `;
           } else {
             errorMessage.textContent = "❌ Profile not found.";
@@ -270,9 +325,17 @@ body {
       }
     };
   </script>
+  
+
   <footer class="site-footer">
   <p>&copy; 2025 THE COMPANY UNLTD.</p>
 </footer>
-
+<script>
+  function toggleDropdown() {
+    const content = document.getElementById("dropdownContent");
+    content.style.display = content.style.display === "block" ? "none" : "block";
+  }
+</script>
 </body>
 </html>
+
