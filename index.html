@@ -1,14 +1,12 @@
-<!--- Updated index.html with THE COMPANY UNLTD. branding --->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="menustyles.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>THE COMPANY // Agent Access</title>
+  <link rel="stylesheet" href="menustyles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Cascadia+Code&display=swap" rel="stylesheet">
   <style>
-    
     * {
       box-sizing: border-box;
     }
@@ -22,10 +20,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-height: 100vh;
     }
-     
+
+    .logo-container {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .logo-container img {
+      width: 120px;
+      height: auto;
+      border: 2px solid #5E17EB;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #5E17EB;
+    }
 
     .container {
       background-color: rgba(255, 255, 255, 0.08);
@@ -35,7 +45,9 @@
       box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
       backdrop-filter: blur(10px);
       max-width: 400px;
-      width: 100%;
+      width: 90%;
+      text-align: center;
+      z-index: 1;
     }
 
     h1 {
@@ -67,71 +79,86 @@
       background-color: #e07b3c;
     }
 
+    nav.menu {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: #FF914D;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .menu-items {
+      display: none;
+      list-style: none;
+      padding: 10px;
+      margin: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px #5E17EB;
+    }
+
+    .menu-items.show {
+      display: block;
+    }
+
+    .menu-items li {
+      margin: 8px 0;
+    }
+
+    .menu-items li a {
+      color: #FF914D;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer.site-footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #5E17EB22;
+      margin-top: 60px;
+    }
+
     @media (max-width: 400px) {
       h1 {
         font-size: 22px;
       }
 
-      p {
+      p, a.button {
         font-size: 14px;
       }
 
-      a.button {
-        font-size: 14px;
-        padding: 12px;
+      .menu-toggle {
+        font-size: 22px;
       }
     }
-
-    .watermark-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  background-image: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 80px,
-      rgba(255, 255, 255, 0.02) 80px,
-      rgba(255, 255, 255, 0.02) 160px
-    );
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 40px;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.035);
-  text-align: center;
-  align-content: flex-start;
-  font-family: 'Cascadia Code', monospace;
-  line-height: 1.5;
-  background-repeat: repeat;
-  background-size: contain;
-  overflow: hidden;
-}
-
-.watermark-bg::before {
-  content: 'THE COMPANY';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.02),
-    rgba(255, 255, 255, 0.02) 100px,
-    transparent 100px,
-    transparent 200px
-  );
-  transform: rotate(-15deg);
-  z-index: 0;
-}
-
   </style>
- 
 </head>
 <body>
+
+  <nav class="menu">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <ul class="menu-items">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="mission.html">View My Missions</a></li>
+      <li><a href="otp.html">OTP Verification</a></li>
+      <li><a href="admin.html">Admin Login</a></li>
+      <li><a href="truth.html">Tell Truths</a></li>
+    </ul>
+  </nav>
+
+  <div class="logo-container">
+    <img src="company-logo.png" alt="THE COMPANY UNLTD. Logo" />
+  </div>
+
   <div class="container">
     <h1>THE COMPANY</h1>
     <p>Welcome, agent. Proceed below to verify your identity or access your mission briefing.</p>
@@ -141,29 +168,19 @@
     <a href="loyalty-check.html" class="button">Faction Checker</a>
     <a href="truth.html" class="button">Make a confession or log a finding</a>
     <a href="lvs.html" class="button">Submit an LVS Form</a>
-    <a href="https://sites.google.com/view/the-company-agent-portal/home" class="button">Return to Information Wesbite</a>
+    <a href="https://sites.google.com/view/the-company-agent-portal/home" class="button">Return to Information Website</a>
     <a href="admin.html" class="button">Admin Login</a>
   </div>
-  <div class="watermark-bg" aria-hidden="true"></div>
-</body>
 
-<body>
-    <nav class="menu">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      <ul class="menu-items">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mission.html">View My Missions</a></li>
-        <li><a href="otp.html">OTP Verification</a></li>
-        <li><a href="admin.html">Admin Login</a></li>
-        <li><a href="truth.html">Tell Truths</a></li>
-      </ul>
-    </nav>
-  
-    <script>
-      function toggleMenu() {
-        const menu = document.querySelector('.menu-items');
-        menu.classList.toggle('show');
-      }
-    </script>
-  </body>
+  <footer class="site-footer">
+    &copy; 2025 THE COMPANY UNLTD. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.querySelector('.menu-items');
+      menu.classList.toggle('show');
+    }
+  </script>
+</body>
 </html>
