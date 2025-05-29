@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="menustyles.css" />
@@ -130,6 +131,13 @@
 </div>
 
 <script type="module">
+  import {
+  getDoc,        // ✅ ADD THIS
+  updateDoc,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -146,7 +154,7 @@
   const db = getFirestore(app);
 
   // Password Gate
-  const ADMIN_PASSWORD = "thecompany2025";
+  const ADMIN_PASSWORD = "12345";
   window.verifyLogin = function () {
     const input = document.getElementById("adminPassword").value;
     const loginBox = document.getElementById("loginBox");
@@ -161,7 +169,8 @@
     }
   };
 
-  window.updateMission = async function () {
+
+window.updateMission = async function () {
   const codename = document.getElementById("codename").value.trim().toLowerCase();
   const mission = document.getElementById("missionText").value.trim();
   const missionName = document.getElementById("missionName").value.trim();
@@ -169,48 +178,51 @@
   const status = document.getElementById("missionStatus").value.trim();
   const statusDiv = document.getElementById("status");
 
-  if (!codename) {
-    statusDiv.textContent = "⚠️ Please enter an agent codename.";
+  if (!codename || codename === "") {
+    statusDiv.textContent = "⚠️ Please select an agent.";
     return;
   }
 
-  // Only include fields that are not empty
-  const missionData = {};
-  if (missionName) missionData["Mission Name"] = missionName;
-  if (mission) missionData["mission"] = mission;
-  if (datePosted) missionData["Date Posted"] = datePosted;
-  if (status) missionData["status"] = status;
+  const missionPayload = {
+    mission,
+    "Mission Name": missionName,
+    "Date Posted": datePosted,
+    status
+  };
 
-  if (Object.keys(missionData).length === 0) {
-    statusDiv.textContent = "⚠️ Please fill in at least one field to update.";
-    return;
-  }
-
-  try {
-    if (codename === "all") {
-      const codenames = [
+  const agentList = codename === "all"
+    ? [
         "gladio", "orion", "mkultra", "eclipse", "phoenix",
         "apollyon", "spectre", "artichoke", "templar", "ravenwood", "blackbird"
-      ];
+      ]
+    : [codename];
 
-      const updates = codenames.map(name =>
-        setDoc(doc(db, "missions", name), missionData, { merge: true })
-      );
+  try {
+    for (const agent of agentList) {
+      const agentRef = doc(db, "missions", agent);
+      const agentSnap = await getDoc(agentRef);
+      const passcode = agentSnap.exists() ? agentSnap.data().passcode : "";
 
-      await Promise.all(updates);
-      statusDiv.textContent = "✅ Mission fields successfully updated for ALL agents.";
-    } else {
-      await setDoc(doc(db, "missions", codename), missionData, { merge: true });
-      statusDiv.textContent = `✅ Mission fields for ${codename.toUpperCase()} updated.`;
+      // Update "current" field on main document
+      await updateDoc(agentRef, {
+        codename: agent,
+        passcode: passcode || "",
+        current: missionPayload
+      });
+
+      // Add to history subcollection
+      const historyRef = collection(agentRef, "history");
+      await addDoc(historyRef, missionPayload);
     }
+
+    statusDiv.textContent = codename === "all"
+      ? "✅ Mission updated and logged for ALL agents."
+      : `✅ Mission updated and logged for ${codename.toUpperCase()}.`;
   } catch (error) {
-    console.error(error);
-    statusDiv.textContent = "❌ Error updating mission. Check console for details.";
+    console.error("❌ Error updating mission:", error);
+    statusDiv.textContent = "❌ Something went wrong. Check the console.";
   }
 };
-
-
-
 </script>
 
 </body>
