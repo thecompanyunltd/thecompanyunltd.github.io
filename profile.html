@@ -300,15 +300,18 @@
             dashboard.style.display = "block";
             errorMessage.style.display = "none";
 
+            const current = data.current || {}; // fallback to empty object to avoid crash
+
             dashboard.innerHTML = `
               <img src="upload/${codename}.jpeg" alt="Agent Photo" class="agent-photo"/>
               <div class="field-row"><span class="label">Codename:</span> ${data.codename}</div>
               <div class="field-row"><span class="label">Passcode:</span> ${data.passcode}</div>
-              <div class="field-row"><span class="label">Mission Name:</span> ${data["Mission Name"]}</div>
-              <div class="field-row"><span class="label">Date Posted:</span> ${data["Date Posted"]}</div>
-              <div class="field-row"><span class="label">Mission Brief:</span> ${data.mission}</div>
-              <div class="field-row"><span class="label">Mission Status:</span> ${data.status}</div>
-              <div class="field-row"><span class="label">Strikes:</span> ${data.strikes}</div>
+              <div class="field-row"><span class="label">Mission Name:</span> ${current["Mission Name"] || "N/A"}</div>
+              <div class="field-row"><span class="label">Date Posted:</span> ${current["Date Posted"] || "N/A"}</div>
+              <div class="field-row"><span class="label">Mission Brief:</span> ${current.mission || "N/A"}</div>
+              <div class="field-row"><span class="label">Mission Status:</span> ${current.status || "N/A"}</div>
+              <div class="field-row"><span class="label">Strikes:</span> ${data.strikes ?? "0"}</div>
+
               
               <div class="field-row">
                 <span class="label">Quick Links:</span>
