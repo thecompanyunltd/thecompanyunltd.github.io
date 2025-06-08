@@ -17,16 +17,15 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      overflow: hidden;
     }
 
     .container {
       background-color: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 40px 30px;
+      padding: 30px 20px;
       border-radius: 20px;
       max-width: 600px;
-      width: 90%;
+      width: 95%;
       text-align: left;
       box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
       backdrop-filter: blur(10px);
@@ -35,7 +34,7 @@
     h1 {
       font-family: 'Libre Baskerville', serif;
       font-size: 24px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       color: #FF914D;
       text-align: center;
     }
@@ -61,18 +60,26 @@
 
     .investigation {
       font-size: 14px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .investigation p {
-      margin: 8px 0;
-    }
+  margin: 10px 0;
+  display: block;
+}
+
 
     .ellipsis::after {
       content: '';
       display: inline-block;
       animation: dots 1.5s steps(3, end) infinite;
     }
+
+    .e1::after { animation-delay: 0s; }
+    .e2::after { animation-delay: 0.3s; }
+    .e3::after { animation-delay: 0.6s; }
+    .e4::after { animation-delay: 0.9s; }
+    .e5::after { animation-delay: 1.2s; }
 
     @keyframes dots {
       0%   { content: ''; }
@@ -87,6 +94,8 @@
       overflow: hidden;
       width: 0;
       animation: typing 4s steps(40, end) forwards, blink 0.8s step-end infinite;
+      font-size: 14px;
+      margin-bottom: 20px;
     }
 
     @keyframes typing {
@@ -109,6 +118,29 @@
       display: inline-block;
       animation: dots 1.5s steps(3, end) infinite;
     }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      .loader-bar {
+        height: 24px;
+      }
+
+      .loader-fill {
+        font-size: 12px;
+        line-height: 24px;
+      }
+
+      .typewriter {
+        font-size: 13px;
+      }
+
+      .investigation {
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -120,17 +152,16 @@
       <div class="loader-fill">6%</div>
     </div>
 
-    <div class="investigation">
-      <p>An A.I. Conversation with The Company's A.I. Bot has been flagged (4 June)<span class="ellipsis"></span></p>
-      <p>The Company has notified the Internal Affairs Chair (6 June)<span class="ellipsis"></span></p>
-      <p>The COO sent an investigation task to the CISR department<span class="ellipsis"></span></p>
-      <p>The CISR department accepted the investigation (8 June)<span class="ellipsis"></span></p>
-      <p>Agents informed (8 June)<span class="ellipsis"></span></p>
+ <div class="investigation">
+      <p>An A.I. Conversation with The Company's A.I. Bot has been flagged (4 June)<span class="ellipsis e1"></span></p>
+      <p>The Company has notified the Internal Affairs Chair (6 June)<span class="ellipsis e2"></span></p>
+      <p>The COO sent an investigation task to the CISR department<span class="ellipsis e3"></span></p>
+      <p>The CISR department accepted the investigation (8 June)<span class="ellipsis e4"></span></p>
+      <p>Agents informed (8 June)<span class="ellipsis e5"></span></p>
       <p><span class="ellipsis"></span></p>
     </div>
 
     <p class="typewriter">Estimated Date of Investigation Outcomes: 15 July...</p>
-
     <div class="loading-dots"><span>Loading</span></div>
   </div>
 
