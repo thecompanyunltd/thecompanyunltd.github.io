@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THE COMPANY // Ongoing Investigation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Cascadia+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0d0d0d, #35133b, #5a0266, #2c5364);
+      font-family: 'Cascadia Code', monospace;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 40px 30px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      text-align: left;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #FF914D;
+      text-align: center;
+    }
+
+    .loader-bar {
+      background-color: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 30px;
+      margin-bottom: 20px;
+    }
+
+    .loader-fill {
+      background-color: #5E17EB;
+      height: 100%;
+      width: 6%;
+      text-align: center;
+      line-height: 30px;
+      color: #fff;
+      font-weight: bold;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .investigation {
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .investigation p {
+      margin: 8px 0;
+    }
+
+    .ellipsis::after {
+      content: '';
+      display: inline-block;
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    .typewriter {
+      border-right: 2px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 4s steps(40, end) forwards, blink 0.8s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    .loading-dots {
+      font-size: 16px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .loading-dots span::after {
+      content: '';
+      display: inline-block;
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Ongoing Investigation</h1>
+
+    <div class="loader-bar">
+      <div class="loader-fill">6%</div>
+    </div>
+
+    <div class="investigation">
+      <p>An A.I. Conversation with The Company's A.I. Bot has been flagged (4 June)<span class="ellipsis"></span></p>
+      <p>The Company has notified the Internal Affairs Chair (6 June)<span class="ellipsis"></span></p>
+      <p>The COO sent an investigation task to the CISR department<span class="ellipsis"></span></p>
+      <p>The CISR department accepted the investigation (8 June)<span class="ellipsis"></span></p>
+      <p>Agents informed (8 June)<span class="ellipsis"></span></p>
+      <p><span class="ellipsis"></span></p>
+    </div>
+
+    <p class="typewriter">Estimated Date of Investigation Outcomes: 15 July...</p>
+
+    <div class="loading-dots"><span>Loading</span></div>
+  </div>
+
+</body>
+</html>
